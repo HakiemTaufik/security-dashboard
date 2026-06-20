@@ -1,0 +1,19 @@
+-- ============================================================
+-- Seed Data - Run AFTER schema.sql
+-- ============================================================
+-- IMPORTANT: Default credentials are placeholders. The setup.php script
+-- (run once after deployment) will create the admin with proper Argon2id
+-- hashing and AES-256-GCM encryption of email/IC. Use that script instead
+-- of inserting passwords directly here.
+--
+-- Default admin (created by setup.php):
+--   username: admin
+--   password: Admin@12345  (CHANGE IMMEDIATELY)
+--
+-- Default employee (created by setup.php):
+--   username: employee01
+--   password: Employee@123
+-- ============================================================
+
+-- This file is intentionally minimal. Run /setup.php in your browser
+-- once after uploading to create the seed users with correct cryptography.

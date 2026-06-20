@@ -1,0 +1,56 @@
+# ============================================================
+# Security Dashboard - Apache Configuration (Single Folder Layout)
+# ============================================================
+
+# 1. Disable directory listing (prevents people seeing your files)
+Options -Indexes
+
+# 2. Set the default landing page
+DirectoryIndex index.php login.php
+
+# 3. Send security headers
+<IfModule mod_headers.c>
+    Header set X-Content-Type-Options "nosniff"
+    Header set X-Frame-Options "DENY"
+    Header set Referrer-Policy "strict-origin-when-cross-origin"
+    Header set X-XSS-Protection "1; mode=block"
+
+    # Strict-Transport-Security: enforce HTTPS for one year (HSTS).
+    # Closes the "strict-transport-security missing" finding from Nikto.
+    Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload" env=HTTPS
+
+    # Permissions-Policy: deny all browser features the app does not use.
+    # Closes the "permissions-policy missing" finding from Nikto.
+    Header set Permissions-Policy "geolocation=(), camera=(), microphone=(), payment=(), usb=(), magnetometer=(), gyroscope=(), accelerometer=()"
+
+    # Strip the X-Powered-By header that exposes the PHP version.
+    # Closes the "x-powered-by: PHP/8.3.30" finding from Nikto.
+    Header unset X-Powered-By
+    Header always unset X-Powered-By
+</IfModule>
+
+# Belt-and-braces: hide PHP version even if mod_headers is not loaded
+<IfModule mod_php.c>
+    php_flag expose_php Off
+</IfModule>
+
+# 4. Block access to sensitive file types
+<FilesMatch "^(\.htaccess|\.git|.*\.md|.*\.sql|.*\.yml|.*\.lock)$">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</FilesMatch>
+
+# 5. Block direct web access to internal application folders
+# We use RewriteRule instead of RedirectMatch as it is safer and less likely to cause 500 errors.
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteRule ^config/.*$ - [F,L]
+    RewriteRule ^includes/.*$ - [F,L]
+    RewriteRule ^sql/.*$ - [F,L]
+    RewriteRule ^docs/.*$ - [F,L]
+</IfModule>
