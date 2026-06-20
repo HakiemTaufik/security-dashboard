@@ -161,6 +161,3 @@ them on a publicly reachable instance.
 | employee02 | Employee@123 | employee |
 | employee03 | Employee@123 | employee |
 
-## License
-
-MIT — see [LICENSE](LICENSE).
