@@ -11,7 +11,6 @@ log integrity.
 
 ![PHP](https://img.shields.io/badge/PHP-7.4%2B-777BB4)
 ![MySQL](https://img.shields.io/badge/MySQL-5.7%2B-4479A1)
-![License](https://img.shields.io/badge/License-MIT-green)
 
 ## What it does
 
